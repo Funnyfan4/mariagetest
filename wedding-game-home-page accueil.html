@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notre Mariage Mystère - Bienvenue</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f4ed;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: linear-gradient(to bottom, #f9f4ed, #fcf0f5);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Fleurs décoratives */
+        .flower {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+        }
+        
+        .flower-1 {
+            top: 20px;
+            left: 20px;
+            transform: rotate(-15deg);
+        }
+        
+        .flower-2 {
+            top: 30px;
+            right: 30px;
+            transform: rotate(20deg);
+        }
+        
+        .flower-3 {
+            bottom: 40px;
+            left: 40px;
+            transform: rotate(10deg);
+        }
+        
+        .flower-4 {
+            bottom: 30px;
+            right: 25px;
+            transform: rotate(-10deg);
+        }
+        
+        .flower-5 {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%) rotate(25deg);
+        }
+        
+        .flower-6 {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%) rotate(-25deg);
+        }
+        
+        h1 {
+            color: #e83e8c;
+            margin-bottom: 10px;
+            font-size: 2.4em;
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #6c5ce7;
+            margin-bottom: 30px;
+            font-size: 1.6em;
+            font-weight: normal;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .photo-container {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #fd79a8;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .intro-text {
+            line-height: 1.7;
+            margin-bottom: 40px;
+            text-align: left;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+            font-size: 1.05em;
+        }
+        
+        .emoji {
+            font-size: 1.4em;
+            vertical-align: middle;
+            margin: 0 3px;
+        }
+        
+        .start-button {
+            display: inline-block;
+            background-image: linear-gradient(to right, #fd79a8, #e83e8c);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(232, 62, 140, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(232, 62, 140, 0.5);
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(236, 236, 255, 0.8);
+            border-radius: 15px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2);
+        }
+        
+        .instructions h3 {
+            color: #6c5ce7;
+            margin-top: 0;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .instructions li::marker {
+            color: #e83e8c;
+        }
+        
+        /* Animation de couleurs */
+        @keyframes colorChange {
+            0% { color: #e83e8c; }
+            25% { color: #fd79a8; }
+            50% { color: #6c5ce7; }
+            75% { color: #00cec9; }
+            100% { color: #e83e8c; }
+        }
+        
+        .color-changing {
+            animation: colorChange 8s infinite;
+            font-weight: bold;
+        }
+        
+        /* Confetti background */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            opacity: 0.6;
+            border-radius: 50%;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Fleurs décoratives -->
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23fd79a8'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-1">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%2300cec9'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-2">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%236c5ce7'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-3">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23fdcb6e'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-4">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%2374b9ff'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-5">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23ff7675'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-6">
+        
+        <!-- Confetti -->
+        <script>
+            function createConfetti() {
+                const container = document.querySelector('.container');
+                const colors = ['#fd79a8', '#e84393', '#6c5ce7', '#00cec9', '#fdcb6e', '#ff7675', '#74b9ff'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Position aléatoire
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    
+                    confetti.style.left = `${x}%`;
+                    confetti.style.top = `${y}%`;
+                    
+                    // Couleur aléatoire
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    confetti.style.backgroundColor = colors[colorIndex];
+                    
+                    // Taille aléatoire
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // Animation
+                    const duration = Math.random() * 5 + 5;
+                    confetti.style.animation = `float ${duration}s infinite alternate ease-in-out`;
+                    confetti.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    container.appendChild(confetti);
+                }
+            }
+            
+            // Exécuter lors du chargement de la page
+            window.addEventListener('DOMContentLoaded', createConfetti);
+        </script>
+        
+        <h1>Notre Mariage Mystère <span class="emoji">💕</span></h1>
+        <h2><span class="emoji">✨</span> Anne-Marie & Fanny <span class="emoji">✨</span></h2>
+        
+        <div class="photo-container">
+            <!-- Modifié pour utiliser le nouveau nom de fichier -->
+            <img src="Photo_accueil.jpg" alt="Anne-Marie et Fanny">
+        </div>
+        
+        <div class="intro-text">
+            <p><span class="emoji">👋</span> Bienvenue dans notre jeu de mariage ! Nous avons décidé de vous faire découvrir la date et le lieu de notre mariage d'une façon originale et ludique. <span class="emoji">🎮</span></p>
+            
+            <p><span class="emoji">💫</span> À travers trois niveaux de jeu, vous allez explorer notre histoire et découvrir petit à petit les informations sur notre <span class="color-changing">grand jour</span>. <span class="emoji">🔍</span></p>
+            
+            <p><span class="emoji">🎯</span> Êtes-vous prêt(e) à relever le défi et à percer le mystère de notre mariage ? <span class="emoji">🥂</span></p>
+        </div>
+        
+        <button class="start-button" onclick="startGame()">
+            <span class="emoji">🚀</span> Commencer l'aventure
+        </button>
+        
+        <div class="instructions">
+            <h3><span class="emoji">📝</span> Comment jouer :</h3>
+            <ul>
+                <li><strong>Niveau 1 :</strong> <span class="emoji">🗺️</span> Répondez aux questions pour découvrir la région où se déroulera notre mariage.</li>
+                <li><strong>Niveau 2 :</strong> <span class="emoji">🏰</span> Trouvez le lieu exact de la cérémonie.</li>
+                <li><strong>Niveau 3 :</strong> <span class="emoji">📅</span> Déterminez la date précise de notre mariage.</li>
+            </ul>
+            <p><span class="emoji">💡</span> À chaque étape, vous pourrez demander des indices si vous êtes bloqué(e).</p>
+        </div>
+    </div>
+    
+    <script>
+        function startGame() {
+            // Cette fonction redirigera vers le niveau 1
+            // Pour l'instant, affichons simplement une alerte
+            alert("Prêt à commencer ? Le niveau 1 va se charger...");
+            // Dans la version finale, nous utiliserons:
+            // window.location.href = "niveau1.html";
+        }
+    </script>
+</body>
+</html>
