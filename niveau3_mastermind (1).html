@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind - Trouvez notre date de mariage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Raleway:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: linear-gradient(45deg, #f8f5f1, #e8e2d8);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #8b6f47;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions {
+            font-size: 1.1rem;
+            color: #6b5447;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .mastermind-board {
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .attempt-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            min-height: 50px;
+        }
+        
+        .digit-input {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4c3b0;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .digit-input:focus {
+            outline: none;
+            border-color: #8b6f47;
+            box-shadow: 0 0 5px rgba(139, 111, 71, 0.3);
+        }
+        
+        .digit-input:disabled {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .feedback {
+            margin-left: 20px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .feedback-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+        }
+        
+        .correct-position {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .correct-digit {
+            background: #FFC107;
+            border-color: #FFC107;
+        }
+        
+        .submit-btn {
+            background: #8b6f47;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            background: #6b5447;
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        .hint {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+        
+        .next-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .next-btn:hover {
+            background: #388e3c;
+            transform: translateY(-2px);
+        }
+        
+        .attempts-counter {
+            font-size: 1rem;
+            color: #6b5447;
+            margin-top: 20px;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .celebration {
+            animation: celebrate 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Le code secret</h1>
+        <div class="instructions">
+            Jouez au Mastermind pour découvrir notre code secret !<br>
+            Entrez une combinaison de 6 chiffres.<br>
+            <span style="color: #4CAF50;">● Vert</span> = chiffre correct au bon endroit, 
+            <span style="color: #FFC107;">● Jaune</span> = chiffre correct mais mal placé
+        </div>
+        
+        <div class="mastermind-board" id="mastermindBoard">
+            <!-- Les tentatives seront ajoutées ici dynamiquement -->
+        </div>
+        
+        <div id="currentAttempt" class="attempt-row">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+        </div>
+        
+        <button class="submit-btn" id="submitBtn">Vérifier</button>
+        
+        <div id="message" class="message" style="display: none;"></div>
+        
+        <div class="attempts-counter" id="attemptsCounter">Tentatives : 0 / 10</div>
+        
+        <button class="next-btn" id="nextBtn" onclick="window.location.href='felicitations.html'">Continuer vers les félicitations</button>
+    </div>
+    
+    <script>
+        const SECRET_CODE = '020526'; // JJMMAA pour le 2 mai 2026
+        let attempts = 0;
+        const maxAttempts = 10;
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.digit-input');
+            const submitBtn = document.getElementById('submitBtn');
+            const message = document.getElementById('message');
+            const board = document.getElementById('mastermindBoard');
+            const attemptsCounter = document.getElementById('attemptsCounter');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // Gestion des inputs
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length > 1) {
+                        e.target.value = e.target.value.slice(-1);
+                    }
+                    
+                    // Auto-focus sur le prochain input
+                    if (e.target.value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    // Supprimer et revenir à l'input précédent
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Vérification de la combinaison
+            submitBtn.addEventListener('click', () => {
+                const guess = Array.from(inputs).map(input => input.value).join('');
+                
+                if (guess.length !== 6) {
+                    showMessage('Veuillez entrer 6 chiffres', 'error');
+                    return;
+                }
+                
+
+                
+                attempts++;
+                attemptsCounter.textContent = `Tentatives : ${attempts} / ${maxAttempts}`;
+                
+                const feedback = checkGuess(guess);
+                displayAttempt(guess, feedback);
+                
+                if (guess === SECRET_CODE) {
+                    showMessage('🎉 Félicitations ! Vous avez trouvé le code secret ! 🎉', 'success');
+                    document.getElementById('submitBtn').style.display = 'none';
+                    nextBtn.style.display = 'inline-block';
+                    inputs.forEach(input => input.disabled = true);
+                    
+                    // Animation de célébration
+                    document.querySelector('.container').classList.add('celebration');
+                } else if (attempts >= maxAttempts) {
+                    showMessage(`Vous avez épuisé vos tentatives. Le code secret était ${SECRET_CODE}`, 'error');
+                    submitBtn.disabled = true;
+                    inputs.forEach(input => input.disabled = true);
+                } else {
+                    // Réinitialiser pour la prochaine tentative
+                    inputs.forEach(input => {
+                        input.value = '';
+                    });
+                    inputs[0].focus();
+                }
+            });
+        });
+        
+        function checkGuess(guess) {
+            const feedback = [];
+            const usedPositions = new Set();
+            const guessArray = guess.split('');
+            const secretArray = SECRET_CODE.split('');
+            
+            // Première passe : chiffres corrects au bon endroit
+            for (let i = 0; i < 6; i++) {
+                if (guessArray[i] === secretArray[i]) {
+                    feedback[i] = 'correct-position';
+                    usedPositions.add(i);
+                }
+            }
+            
+            // Deuxième passe : chiffres corrects mal placés
+            for (let i = 0; i < 6; i++) {
+                if (feedback[i]) continue; // Déjà traité
+                
+                for (let j = 0; j < 6; j++) {
+                    if (!usedPositions.has(j) && guessArray[i] === secretArray[j]) {
+                        feedback[i] = 'correct-digit';
+                        usedPositions.add(j);
+                        break;
+                    }
+                }
+                
+                if (!feedback[i]) {
+                    feedback[i] = 'wrong';
+                }
+            }
+            
+            return feedback;
+        }
+        
+        function displayAttempt(guess, feedback) {
+            const board = document.getElementById('mastermindBoard');
+            const attemptRow = document.createElement('div');
+            attemptRow.className = 'attempt-row';
+            
+            // Afficher la tentative
+            guess.split('').forEach((digit, index) => {
+                const digitDiv = document.createElement('div');
+                digitDiv.className = 'digit-input';
+                digitDiv.style.background = '#f5f5f5';
+                digitDiv.textContent = digit;
+                attemptRow.appendChild(digitDiv);
+            });
+            
+            // Afficher le feedback
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            
+            feedback.forEach(type => {
+                const dot = document.createElement('div');
+                dot.className = `feedback-dot ${type}`;
+                feedbackDiv.appendChild(dot);
+            });
+            
+            attemptRow.appendChild(feedbackDiv);
+            board.appendChild(attemptRow);
+        }
+        
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            if (type === 'error') {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+    </script>
+</body>
+</html>
