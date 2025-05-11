@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étape 3 - Trouvez le code secret</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f4ed;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-image: linear-gradient(to bottom, #f9f4ed, #fcf0f5);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Fleurs décoratives */
+        .flower {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+        }
+        
+        .flower-1 {
+            top: 20px;
+            left: 20px;
+            transform: rotate(-15deg);
+        }
+        
+        .flower-2 {
+            top: 30px;
+            right: 30px;
+            transform: rotate(20deg);
+        }
+        
+        .flower-3 {
+            bottom: 40px;
+            left: 40px;
+            transform: rotate(10deg);
+        }
+        
+        .flower-4 {
+            bottom: 30px;
+            right: 25px;
+            transform: rotate(-10deg);
+        }
+        
+        .flower-5 {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%) rotate(25deg);
+        }
+        
+        .flower-6 {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%) rotate(-25deg);
+        }
+        
+        h1 {
+            color: #e83e8c;
+            margin-bottom: 10px;
+            font-size: 2.4em;
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .emoji {
+            font-size: 1.4em;
+            vertical-align: middle;
+            margin: 0 3px;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: rgba(236, 236, 255, 0.8);
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2);
+            line-height: 1.7;
+        }
+        
+        .mastermind-container {
+            margin: 30px 0;
+            padding: 25px;
+            background-color: rgba(236, 236, 255, 0.8);
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2);
+        }
+        
+        .mastermind-board {
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .attempt-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            min-height: 50px;
+        }
+        
+        .digit-input {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #fd79a8;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .digit-input:focus {
+            outline: none;
+            border-color: #e83e8c;
+            box-shadow: 0 0 5px rgba(232, 62, 140, 0.3);
+        }
+        
+        .digit-input:disabled {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .feedback {
+            margin-left: 20px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .feedback-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+        }
+        
+        .correct-position {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .correct-digit {
+            background: #FFC107;
+            border-color: #FFC107;
+        }
+        
+        button {
+            display: inline-block;
+            background-image: linear-gradient(to right, #fd79a8, #e83e8c);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(232, 62, 140, 0.4);
+            margin: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(232, 62, 140, 0.5);
+        }
+        
+        button:disabled {
+            background-image: linear-gradient(to right, #cccccc, #999999);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hint-btn {
+            background-image: linear-gradient(to right, #6c5ce7, #00cec9);
+            margin-bottom: 15px;
+        }
+        
+        .next-btn {
+            background-image: linear-gradient(to right, #6c5ce7, #00cec9);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+        
+        .error {
+            color: #e83e8c;
+        }
+        
+        .hint {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            color: #333;
+        }
+        
+        .attempts-counter {
+            font-size: 1rem;
+            color: #333;
+            margin-top: 20px;
+            background-color: rgba(253, 121, 168, 0.3);
+            padding: 10px 20px;
+            border-radius: 15px;
+        }
+        
+        .hint-section {
+            margin-top: 30px;
+        }
+        
+        .hint-message {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 0 15px 15px 0;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+            text-align: left;
+            font-style: italic;
+        }
+        
+        .progress {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-image: linear-gradient(to right, #fd79a8, #e83e8c);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(232, 62, 140, 0.4);
+            z-index: 1000;
+        }
+        
+        /* Confetti background */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            opacity: 0.6;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(-1deg); }
+            75% { transform: scale(1.05) rotate(1deg); }
+        }
+        
+        .celebration {
+            animation: celebrate 0.6s ease-in-out;
+        }
+        
+        /* Animation de couleurs */
+        @keyframes colorChange {
+            0% { color: #e83e8c; }
+            25% { color: #fd79a8; }
+            50% { color: #6c5ce7; }
+            75% { color: #00cec9; }
+            100% { color: #e83e8c; }
+        }
+        
+        .color-changing {
+            animation: colorChange 8s infinite;
+            font-weight: bold;
+        }
+        
+        /* Nouvelle animation pour les confettis de victoire */
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10px) rotateZ(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Fleurs décoratives -->
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23fd79a8'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-1">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%2300cec9'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-2">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%236c5ce7'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-3">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23fdcb6e'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-4">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%2374b9ff'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-5">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 C60 30 70 40 100 50 C70 60 60 70 50 100 C40 70 30 60 0 50 C30 40 40 30 50 0' fill='%23ff7675'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23ffeaa7'/%3E%3C/svg%3E" class="flower flower-6">
+        
+        <!-- Script pour les confettis de fond -->
+        <script>
+            function createBackgroundConfetti() {
+                const container = document.querySelector('.container');
+                const colors = ['#fd79a8', '#e84393', '#6c5ce7', '#00cec9', '#fdcb6e', '#ff7675', '#74b9ff'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Position aléatoire
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    
+                    confetti.style.left = `${x}%`;
+                    confetti.style.top = `${y}%`;
+                    
+                    // Couleur aléatoire
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    confetti.style.backgroundColor = colors[colorIndex];
+                    
+                    // Taille aléatoire
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    
+                    // Animation
+                    const duration = Math.random() * 5 + 5;
+                    confetti.style.animation = `float ${duration}s infinite alternate ease-in-out`;
+                    confetti.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    container.appendChild(confetti);
+                }
+            }
+            
+            // Exécuter lors du chargement de la page
+            window.addEventListener('DOMContentLoaded', createBackgroundConfetti);
+        </script>
+        
+        <div class="progress">Étape: 3/4</div>
+        
+        <h1><span class="emoji">🔐</span> Le code secret <span class="emoji">💕</span></h1>
+        
+        <div class="instructions">
+            <p>Jouez au Mastermind pour découvrir notre code secret !</p>
+            <p>Entrez une combinaison de 6 chiffres.</p>
+            <p><span style="color: #4CAF50;">● Vert</span> = chiffre correct au bon endroit, 
+            <span style="color: #FFC107;">● Jaune</span> = chiffre correct mais mal placé</p>
+        </div>
+        
+        <div class="mastermind-container">
+            <div class="mastermind-board" id="mastermindBoard">
+                <!-- Les tentatives seront ajoutées ici dynamiquement -->
+            </div>
+            
+            <div id="currentAttempt" class="attempt-row">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+                <input type="number" class="digit-input" maxlength="1" min="0" max="9">
+            </div>
+            
+            <button class="submit-btn" id="submitBtn"><span class="emoji">✔️</span> Vérifier</button>
+            
+            <div id="message" class="message" style="display: none;"></div>
+            
+            <div class="attempts-counter" id="attemptsCounter">Tentatives : 0</div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" id="hintBtn"><span class="emoji">💡</span> Besoin d'un indice ? (1/5)</button>
+                <div class="hint-message" id="hintMessage"></div>
+            </div>
+        </div>
+        
+        <button class="next-btn" id="nextBtn" onclick="window.location.href='felicitations.html'">
+            <span class="emoji">➡️</span> Continuer vers les félicitations
+        </button>
+    </div>
+    
+    <script>
+        const SECRET_CODE = '020526';
+        let attempts = 0;
+        let hintsGiven = 0;
+        const maxHints = 5;
+        
+        const hints = [
+            "Indice 1/5 : Il y a 2 chiffres qui se répètent dans la combinaison...",
+            "Indice 2/5 : Pensez à utiliser le 0...",
+            "Indice 3/5 : Le code secret correspond à la date de notre mariage !",
+            "Indice 4/5 : On célèbre notre mariage au milieu du printemps.",
+            "Indice 5/5 : Pour le jour, c'est le même jour que l'anniversaire de Fanny."
+        ];
+        
+        // Fonction pour créer des confettis de victoire
+        function createVictoryConfetti() {
+            const colors = ['#fd79a8', '#e84393', '#6c5ce7', '#00cec9', '#fdcb6e', '#ff7675', '#74b9ff'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = Math.random() * 8 + 4 + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.animation = 'confetti-fall ' + (Math.random() * 3 + 2) + 's linear';
+                    confetti.style.zIndex = '10000';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 50);
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.digit-input');
+            const submitBtn = document.getElementById('submitBtn');
+            const message = document.getElementById('message');
+            const board = document.getElementById('mastermindBoard');
+            const attemptsCounter = document.getElementById('attemptsCounter');
+            const nextBtn = document.getElementById('nextBtn');
+            const hintBtn = document.getElementById('hintBtn');
+            const hintMessage = document.getElementById('hintMessage');
+            
+            // Gestion des indices
+            hintBtn.addEventListener('click', () => {
+                if (hintsGiven < maxHints) {
+                    hintMessage.textContent = hints[hintsGiven];
+                    hintMessage.style.display = 'block';
+                    hintsGiven++;
+                    
+                    if (hintsGiven >= maxHints) {
+                        hintBtn.disabled = true;
+                        hintBtn.innerHTML = '<span class="emoji">💡</span> Plus d\'indices disponibles';
+                    } else {
+                        hintBtn.innerHTML = `<span class="emoji">💡</span> Besoin d'un indice ? (${hintsGiven + 1}/5)`;
+                    }
+                }
+            });
+            
+            // Gestion des inputs
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length > 1) {
+                        e.target.value = e.target.value.slice(-1);
+                    }
+                    
+                    // Auto-focus sur le prochain input
+                    if (e.target.value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    // Supprimer et revenir à l'input précédent
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Vérification de la combinaison
+            submitBtn.addEventListener('click', () => {
+                const guess = Array.from(inputs).map(input => input.value).join('');
+                
+                if (guess.length !== 6) {
+                    showMessage('Veuillez entrer 6 chiffres', 'error');
+                    return;
+                }
+                
+                attempts++;
+                attemptsCounter.textContent = `Tentatives : ${attempts}`;
+                
+                const feedback = checkGuess(guess);
+                displayAttempt(guess, feedback);
+                
+                if (guess === SECRET_CODE) {
+                    showMessage('🎉 Félicitations ! Vous avez trouvé le code secret ! 🎉', 'success');
+                    submitBtn.style.display = 'none';
+                    nextBtn.style.display = 'inline-block';
+                    inputs.forEach(input => input.disabled = true);
+                    hintBtn.style.display = 'none';
+                    
+                    // Animation de célébration
+                    document.querySelector('.container').classList.add('celebration');
+                    createVictoryConfetti();
+                    
+                    // Si c'est la première fois qu'ils voient que c'est une date
+                    if (hintsGiven < 5) {
+                        setTimeout(() => {
+                            showMessage('Le code secret était une date : le 02 mai 2026, notre date de mariage ! 💕', 'hint');
+                        }, 3000);
+                    }
+                } else {
+                    // Réinitialiser pour la prochaine tentative
+                    inputs.forEach(input => {
+                        input.value = '';
+                    });
+                    inputs[0].focus();
+                }
+            });
+        });
+        
+        function checkGuess(guess) {
+            const feedback = [];
+            const usedPositions = new Set();
+            const guessArray = guess.split('');
+            const secretArray = SECRET_CODE.split('');
+            
+            let correctPositions = 0;
+            let correctDigits = 0;
+            
+            // Première passe : chiffres corrects au bon endroit
+            for (let i = 0; i < 6; i++) {
+                if (guessArray[i] === secretArray[i]) {
+                    correctPositions++;
+                    usedPositions.add(i);
+                }
+            }
+            
+            // Deuxième passe : chiffres corrects mal placés
+            const remainingSecretDigits = [];
+            const remainingGuessDigits = [];
+            
+            for (let i = 0; i < 6; i++) {
+                if (!usedPositions.has(i)) {
+                    remainingSecretDigits.push(secretArray[i]);
+                    remainingGuessDigits.push(guessArray[i]);
+                }
+            }
+            
+            // Compter les chiffres corrects mal placés
+            const usedSecret = new Set();
+            for (let i = 0; i < remainingGuessDigits.length; i++) {
+                for (let j = 0; j < remainingSecretDigits.length; j++) {
+                    if (!usedSecret.has(j) && remainingGuessDigits[i] === remainingSecretDigits[j]) {
+                        correctDigits++;
+                        usedSecret.add(j);
+                        break;
+                    }
+                }
+            }
+            
+            // Créer le feedback dans l'ordre (verts d'abord, puis jaunes, puis vides)
+            for (let i = 0; i < correctPositions; i++) {
+                feedback.push('correct-position');
+            }
+            for (let i = 0; i < correctDigits; i++) {
+                feedback.push('correct-digit');
+            }
+            for (let i = 0; i < (6 - correctPositions - correctDigits); i++) {
+                feedback.push('wrong');
+            }
+            
+            return feedback;
+        }
+        
+        function displayAttempt(guess, feedback) {
+            const board = document.getElementById('mastermindBoard');
+            const attemptRow = document.createElement('div');
+            attemptRow.className = 'attempt-row';
+            
+            // Afficher la tentative
+            guess.split('').forEach((digit, index) => {
+                const digitDiv = document.createElement('div');
+                digitDiv.className = 'digit-input';
+                digitDiv.style.background = '#f5f5f5';
+                digitDiv.style.border = '2px solid #fd79a8';
+                digitDiv.style.width = '50px';
+                digitDiv.style.height = '50px';
+                digitDiv.style.borderRadius = '10px';
+                digitDiv.style.textAlign = 'center';
+                digitDiv.style.fontSize = '1.5rem';
+                digitDiv.style.fontWeight = 'bold';
+                digitDiv.style.lineHeight = '46px';
+                digitDiv.textContent = digit;
+                attemptRow.appendChild(digitDiv);
+            });
+            
+            // Afficher le feedback
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            
+            feedback.forEach(type => {
+                const dot = document.createElement('div');
+                dot.className = `feedback-dot ${type}`;
+                feedbackDiv.appendChild(dot);
+            });
+            
+            attemptRow.appendChild(feedbackDiv);
+            board.appendChild(attemptRow);
+        }
+        
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            if (type === 'error' && text === 'Veuillez entrer 6 chiffres') {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
